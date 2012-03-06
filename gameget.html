@@ -62,7 +62,7 @@
          }
          console.log(query);
          console.log(params);
-         $.ajax(
+         $.ajax({
             url: urlbase,
             data: params,
             success: function(data){
@@ -72,7 +72,7 @@
             error: function(){
                console.log("Failure");
             }
-         );
+         });
       })
    })
 </script>
