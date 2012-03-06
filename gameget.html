@@ -6,31 +6,69 @@
    .center {text-align: center}
    h1{ font-family: Orbitron; color: #FAEBD7; text-shadow: -1px 1px 1px #000}
    .bg{
-      background-color: #049CD9
+      background-color: #049CD9;
       background-repeat: no-repeat;
       background-image: -webkit-linear-gradient(#004D9F, #049CD9);
       background-image: -moz-linear-gradient(#004D9F, #049CD9);
       background-image: -o-linear-gradient(#004D9F, #049CD9);
       background-image: -khtml-linear-gradient(#004D9F, #049CD9);
    }
+   #gamegetbtn{
+      width:200px;
+      height:75px;
+      font-size:24px;
+      font-family:Orbitron;
+      position:relative;
+      left:600px;
+      background-image:-webkit-linear-gradient(#000, #DDD);
+      background-image:-moz-linear-gradient(#000, #DDD);
+      background-image:-o-linear-gradient(#000, #DDD);
+      background-image:-khtml-linear-gradient(#000, #DDD);
+      color: #ADFF2F;
+   }
    #gottengames {
          display: none
    }
 </style>
 <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'></script>
-<div class="bg">
+<body class="bg">
    <h1 class="center">Get Some Games</h1>
    <br/>
    <button id="gamegetbtn">GAME GET</button>
    <br/>
-   <div id="gottengames">
+   <div id="gottenGames">
       <table>
-         <tr>
+         <tr id="headerRow">
             <th>Title</th>
             <th>System</th>
          </tr>
       </table>
    </div>
-</div>
+</body>
 
-
+<script>
+   $('#gamegetbtn').on('click', function(){
+      var urlbase = "https://api.mongolab.com/api/1/databases/zer0cast/collections/games";
+      var apiKey = "4f54f119e4b091c3a04cd2b0";
+      var query = {
+         "reviewed": { "$exists": false },
+         "system": { "$in": ["NES", "SNES", "genesis", "gameboy"]}
+      };
+      var params = {
+         "apiKey" : apiKey,
+         "q" : JSON.stringify(query),
+         "l" : 4
+      };
+      $.ajax(
+         url: urlbase,
+         data: params,
+         success: function(data){
+            var gameData = data;
+            console.log(gameData);
+         },
+         error: function(){
+            console.log("Failure");
+         }
+      );
+   })
+</script>
