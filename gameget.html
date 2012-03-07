@@ -73,9 +73,26 @@
                var numberOfGames = 4;
                var rand;
                var games = [];
-               for(var i = 0; i < numberOfGames; i++){
+               var usedNumbers = [];
+               var usedSystems = {
+                  'NES': 0,
+                  'SNES': 0,
+                  'genesis': 0,
+                  'gameboy': 0
+               }
+               var count = 0;
+               var game;
+               while(count < 4){
                   rand = parseInt(Math.random() * data.length, 10);
-                  games.push(data[rand]);
+                  if(usedNumbers.indexOf(rand) < 0){
+                     usedNumbers.push(rand);
+                     game = data[rand];
+                     if(usedSystems[game.system] <= 1){
+                        usedSystems[game.system] = Number(usedSystems[game.system])+1;
+                        games.push(game);
+                        count++;
+                     }
+                  }
                }
                populateTable(games, $('#headerRow'));
                $('#gottenGames').show();
