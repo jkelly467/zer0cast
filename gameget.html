@@ -37,11 +37,7 @@
    <button id="gamegetbtn">GAME GET</button>
    <br/>
    <div id="gottenGames">
-      <table>
-         <tr id="headerRow">
-            <th>Title</th>
-            <th>System</th>
-         </tr>
+      <table id="headerRow">
       </table>
    </div>
 </body>
@@ -49,12 +45,13 @@
 <script>
    $(function(){
       var populateTable = function(games, tableHeaderEl){
-         var game, html;
+         var game; 
+         var html = "<tr><th>Title</th><th>System</th></tr>";
          for(var i = 0; i < games.length; i++){
             game = games[i];
-            html = "<tr><td>"+game.title+"</td><td>"+game.system+"</td></tr>";
-            $(tableHeaderEl).append(html);
+            html += "<tr><td>"+game.title+"</td><td>"+game.system+"</td></tr>";
          }
+         $(tableHeaderEl).html(html);
       }
 
       $('#gamegetbtn').on('click', function(){
@@ -72,8 +69,8 @@
             url: urlbase,
             data: params,
             success: function(data){
+               $("#headerRow").html();
                var numberOfGames = 4;
-               var gameData = data;
                var rand;
                var games = [];
                for(var i = 0; i < numberOfGames; i++){
