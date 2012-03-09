@@ -119,6 +119,7 @@
                   fullList.concat(data);
                   mongoGet("gameboy", function(data){
                      fullList.concat(data);
+                     selectGames(fullList);
                   });
                });
             });
