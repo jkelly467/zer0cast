@@ -126,7 +126,7 @@
       $('#gamegetbtn').on('click', function(){
 
          mongoGet("NES", function(adata){
-            fullList = fullList.concat(JSON.parse(adata);
+            fullList = fullList.concat(JSON.parse(adata));
             mongoGet("SNES", function(bdata){
                fullList = fullList.concat(JSON.parse(bdata));
                mongoGet("genesis", function(cdata){
