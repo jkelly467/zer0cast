@@ -53,55 +53,77 @@
          }
          $(tableHeaderEl).html(html);
       }
+      
+      var urlbase = "https://api.mongolab.com/api/1/databases/zer0cast/collections/games";
+      var apiKey = "4f54f119e4b091c3a04cd2b0";
 
-      $('#gamegetbtn').on('click', function(){
-         var urlbase = "https://api.mongolab.com/api/1/databases/zer0cast/collections/games";
-         var apiKey = "4f54f119e4b091c3a04cd2b0";
+      var mongoGet = function(system, success){
          var query = {
             "reviewed": { "$exists": false },
-            "system": { "$in": ["NES", "SNES", "genesis", "gameboy"]}
+            "system": system
          }
          var params = {
             "apiKey" : apiKey,
             "q" : JSON.stringify(query),
          }
+
          $.ajax({
             url: urlbase,
             data: params,
-            success: function(data){
-               $("#headerRow").html();
-               var numberOfGames = 4;
-               var rand;
-               var games = [];
-               var usedNumbers = [];
-               var usedSystems = {
-                  'NES': 0,
-                  'SNES': 0,
-                  'genesis': 0,
-                  'gameboy': 0
-               }
-               var count = 0;
-               var game;
-               while(count < 4){
-                  rand = parseInt(Math.random() * data.length, 10);
-                  if(usedNumbers.indexOf(rand) < 0){
-                     usedNumbers.push(rand);
-                     game = data[rand];
-                     if(usedSystems[game.system] <= 1){
-                        usedSystems[game.system] = Number(usedSystems[game.system])+1;
-                        games.push(game);
-                        count++;
-                     }
-                  }
-               }
-               populateTable(games, $('#headerRow'));
-               $('#gottenGames').show();
-               
-            },
+            success: success,
             error: function(){
-               console.log("Failure");
+               console.log('Failure');
             }
+         })
+      }
+
+      var fullList = []
+
+      var selectGames = function(list){
+         $("#headerRow").html();
+         var numberOfGames = 4;
+         var rand;
+         var games = [];
+         var usedNumbers = [];
+         var usedSystems = {
+            'NES': 0,
+            'SNES': 0,
+            'genesis': 0,
+            'gameboy': 0
+         }
+         var count = 0;
+         var game;
+         while(count < 4){
+            rand = parseInt(Math.random() * list.length, 10);
+            if(usedNumbers.indexOf(rand) < 0){
+               usedNumbers.push(rand);
+               game = list[rand];
+               if(usedSystems[game.system] <= 1){
+                  usedSystems[game.system] = Number(usedSystems[game.system])+1;
+                  games.push(game);
+                  count++;
+               }
+            }
+         }
+         populateTable(games, $('#headerRow'));
+         $('#gottenGames').show();
+      }
+
+      $('#gamegetbtn').on('click', function(){
+
+         mongoGet("NES", function(data){
+            fullList.concat(data);
+            mongoGet("SNES", function(data){
+               fullList.concat(data);
+               mongoGet("genesis", function(data){
+                  fullList.concat(data);
+                  mongoGet("gameboy", function(data){
+                     fullList.concat(data);
+                  });
+               });
+            });
          });
-      })
+
+      });
    })
 </script>
