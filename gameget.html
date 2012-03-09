@@ -84,6 +84,7 @@
          $.ajax({
             url: urlbase,
             data: params,
+            dataType: 'json',
             success: success,
             error: function(){
                console.log('Failure');
