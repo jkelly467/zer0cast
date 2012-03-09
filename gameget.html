@@ -112,13 +112,13 @@
       $('#gamegetbtn').on('click', function(){
 
          mongoGet("NES", function(data){
-            fullList.concat(data);
+            fullList = fullList.concat(data);
             mongoGet("SNES", function(data){
-               fullList.concat(data);
+               fullList = fullList.concat(data);
                mongoGet("genesis", function(data){
-                  fullList.concat(data);
+                  fullList = fullList.concat(data);
                   mongoGet("gameboy", function(data){
-                     fullList.concat(data);
+                     fullList = fullList.concat(data);
                      selectGames(fullList);
                   });
                });
